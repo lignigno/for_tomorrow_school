@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CLEAR_TARGET="$(pwd)"/"$(dirname "$0")"
+CLEAR_TARGET=$(git rev-parse --show-toplevel)
 INSTALL_DIR="$HOME/cmake"
 
 # =============================================================================|
@@ -23,16 +23,9 @@ make -j$(( $(sysctl -n hw.ncpu) + 2 ))
 make install
 rm -rf ~/SDLtmp
 
-# Если нужна статическая или динамическая библиотека, можно указать:
-
-# cmake .. -DBUILD_SHARED_LIBS=ON   # динамическая
-# cmake .. -DBUILD_SHARED_LIBS=OFF  # статическая
 # =============================================================================|
 
 echo 'export PATH=$HOME/cmake/CMake.app/Contents/bin:$PATH' >> "$HOME/.zshrc"
 echo 'export PATH=$HOME/cmake/CMake.app/Contents/bin:$PATH' >> "$HOME/.bashrc"
 
-echo "======================================================"
-echo "will be cleared: $CLEAR_TARGET"
-echo "======================================================"
-# rm -rf $CLEAR_TARGET
+rm -rf $CLEAR_TARGET

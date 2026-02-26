@@ -15,8 +15,8 @@
 # **INSTALL**
 
 ```
-git clone https://01.tomorrow-school.ai/git/afomin/some.git && \
-some/install.sh
+git clone https://github.com/lignigno/for_tomorrow_school.git && \
+for_tomorrow_school/dfd/install.sh
 ```
 
 <br>
