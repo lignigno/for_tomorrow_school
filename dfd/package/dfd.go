@@ -238,16 +238,6 @@ func (this *Window) RestoreParams() {
 // --------------------------------------------------------------------------------------|
 //                                                                                       |
 
-func CreateEventContainer() *EventContainer {
-	newEventContainer := &EventContainer{}
-
-	return newEventContainer
-}
-
-//                                                                                       |
-// --------------------------------------------------------------------------------------|
-//                                                                                       |
-
 // Example:
 //
 //	for game_is_still_running {
