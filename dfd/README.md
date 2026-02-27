@@ -24,7 +24,7 @@ for_tomorrow_school/dfd/install.sh
 # **INCLUDE**
 
 ```
-go get github.com/lignigno/for_tomorrow_school/dfd/package
+go get github.com/lignigno/for_tomorrow_school/dfd/package@v0.0.1
 ```
 
 ```
@@ -65,7 +65,7 @@ func main() {
 	event := dfd.EventContainer{}
 	for {
 		for dfd.PollEvent(&event) {
-			if event.Type {
+			if event.Type == dfd.EVENT_QUIT {
 				os.Exit(0)
 			}
 		}
