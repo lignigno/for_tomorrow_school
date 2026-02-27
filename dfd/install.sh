@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CLEAR_TARGET=$(git rev-parse --show-toplevel)
+
+CLEAR_TARGET=$(cd "$(dirname "$0")"; git rev-parse --show-toplevel)
 INSTALL_DIR="$HOME/cmake"
 
 # =============================================================================|
