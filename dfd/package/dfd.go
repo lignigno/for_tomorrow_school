@@ -214,6 +214,8 @@ func (this *Window) Update() int {
 //                                                                                       |
 
 func (this *Window) _Hide() {
+	// maybe do
+	// hide window
 }
 
 //                                                                                       |
@@ -221,6 +223,8 @@ func (this *Window) _Hide() {
 //                                                                                       |
 
 func (this *Window) _Show() {
+	// maybe do
+	// show window
 }
 
 //                                                                                       |
@@ -248,23 +252,22 @@ func (this *Window) RestoreParams() {
 //		// update game state, draw the current frame
 //	}
 func PollEvent(event *EventContainer) bool {
-	if event != nil {
-		event.WindowEvent = nil
-		event.KeyboardEvent = nil
-		event.MouseMotionEvent = nil
-		event.MouseButtonEvent = nil
-		event.MouseWheelEvent = nil
-		event.DropEvent = nil
+	if event == nil {
+		if int(C.DfD_pool_event(unsafe.Pointer(nil))) != SUCCESS {
+			return false
+		}
+
+		return true
 	}
 
-	for {
-		if event == nil {
-			if int(C.DfD_pool_event(unsafe.Pointer(nil))) != SUCCESS {
-				return false
-			}
+	event.WindowEvent = nil
+	event.KeyboardEvent = nil
+	event.MouseMotionEvent = nil
+	event.MouseButtonEvent = nil
+	event.MouseWheelEvent = nil
+	event.DropEvent = nil
 
-			return true
-		}
+	for {
 		if int(C.DfD_pool_event(unsafe.Pointer(&event._cevent))) != SUCCESS {
 			return false
 		}
