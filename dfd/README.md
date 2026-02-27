@@ -50,7 +50,7 @@ const (
 )
 
 func setPixel(r, g, b, a byte) uint32 {
-	return uint32(r)<<24 | uint32(g)<<24 | uint32(b)<<24 | uint32(a)
+	return uint32(r)<<24 | uint32(g)<<16 | uint32(b)<<8 | uint32(a)
 }
 
 func main() {
