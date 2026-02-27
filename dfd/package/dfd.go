@@ -35,7 +35,7 @@ type Window struct {
 	Width   int
 	Height  int
 	Surface Surface
-	ID      WindowID
+	ID      WindowID // The value 0 is an invalid ID
 }
 
 type EventContainer struct {
@@ -182,16 +182,10 @@ func CreateWindow(title string, w, h int) *Window {
 // --------------------------------------------------------------------------------------|
 //                                                                                       |
 
-func (this *Window) Clear() int {
+func (this *Window) Clear() {
 	for i := 0; i < len(this.Surface); i++ {
 		this.Surface[i] = 0x0
 	}
-
-	if int(C.DfD_clear(this._win)) != SUCCESS {
-		return FAILURE
-	}
-
-	return SUCCESS
 }
 
 //                                                                                       |
@@ -208,11 +202,7 @@ func (this *Window) Update() int {
 	}
 
 	surfacePtr := (*C.uint32_t)(unsafe.Pointer(&this.Surface[0]))
-	if int(C.DfD_set_image(this._win, surfacePtr)) != SUCCESS {
-		return FAILURE
-	}
-
-	if int(C.DfD_update(this._win)) != SUCCESS {
+	if int(C.DfD_update(this._win, surfacePtr)) != SUCCESS {
 		return FAILURE
 	}
 
@@ -248,24 +238,6 @@ func (this *Window) RestoreParams() {
 // --------------------------------------------------------------------------------------|
 //                                                                                       |
 
-func Test() {
-	C.super_main_1()
-}
-
-//                                                                                       |
-// --------------------------------------------------------------------------------------|
-//                                                                                       |
-
-// This is a unique ID for a window.
-//   - The value 0 is an invalid ID.
-func (this *Window) GetId() WindowID {
-	return this._windowId
-}
-
-//                                                                                       |
-// --------------------------------------------------------------------------------------|
-//                                                                                       |
-
 func CreateEventContainer() *EventContainer {
 	newEventContainer := &EventContainer{}
 
@@ -286,14 +258,23 @@ func CreateEventContainer() *EventContainer {
 //		// update game state, draw the current frame
 //	}
 func PollEvent(event *EventContainer) bool {
-	event.WindowEvent = nil
-	event.KeyboardEvent = nil
-	event.MouseMotionEvent = nil
-	event.MouseButtonEvent = nil
-	event.MouseWheelEvent = nil
-	event.DropEvent = nil
+	if event != nil {
+		event.WindowEvent = nil
+		event.KeyboardEvent = nil
+		event.MouseMotionEvent = nil
+		event.MouseButtonEvent = nil
+		event.MouseWheelEvent = nil
+		event.DropEvent = nil
+	}
 
 	for {
+		if event == nil {
+			if int(C.DfD_pool_event(unsafe.Pointer(nil))) != SUCCESS {
+				return false
+			}
+
+			return true
+		}
 		if int(C.DfD_pool_event(unsafe.Pointer(&event._cevent))) != SUCCESS {
 			return false
 		}
